@@ -99,55 +99,378 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Import the Palmer Penguins dataset and print out the first few rows.</p>
 <p>Suppose we want to predict <code>bill_depth_mm</code> using the other variables in the dataset.</p>
 <p>Which variables would we need to <strong>dummify</strong>?</p>
-<p>Need to dummify Species, Island, and Sex</p>
-<div id="cell-3" class="cell" data-outputid="9a7c1eab-9767-4b46-eaec-1ea3848ff0e5" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code Here</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Palmer Penguins dataset</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of the dataset</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(penguins.head())</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Variables to dummify</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>categorical_variables <span class="op">=</span> [<span class="st">"species"</span>, <span class="st">"island"</span>, <span class="st">"sex"</span>]</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># One-hot encode categorical variables</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>penguins_dummified <span class="op">=</span> pd.get_dummies(penguins, columns<span class="op">=</span>categorical_variables, drop_first<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of the transformed dataset</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(penguins_dummified.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-2" class="cell" data-outputid="be7bad4d-eb8d-4396-ade5-41a3da6fd8b7" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install palmerpenguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  species     island  bill_length_mm  bill_depth_mm  flipper_length_mm  \
-0  Adelie  Torgersen            39.1           18.7              181.0   
-1  Adelie  Torgersen            39.5           17.4              186.0   
-2  Adelie  Torgersen            40.3           18.0              195.0   
-3  Adelie  Torgersen             NaN            NaN                NaN   
-4  Adelie  Torgersen            36.7           19.3              193.0   
-
-   body_mass_g     sex  year  
-0       3750.0    male  2007  
-1       3800.0  female  2007  
-2       3250.0  female  2007  
-3          NaN     NaN  2007  
-4       3450.0  female  2007  
-   bill_length_mm  bill_depth_mm  flipper_length_mm  body_mass_g  year  \
-0            39.1           18.7              181.0       3750.0  2007   
-1            39.5           17.4              186.0       3800.0  2007   
-2            40.3           18.0              195.0       3250.0  2007   
-3             NaN            NaN                NaN          NaN  2007   
-4            36.7           19.3              193.0       3450.0  2007   
-
-   species_Chinstrap  species_Gentoo  island_Dream  island_Torgersen  sex_male  
-0              False           False         False              True      True  
-1              False           False         False              True     False  
-2              False           False         False              True     False  
-3              False           False         False              True     False  
-4              False           False         False              True     False  </code></pre>
+<pre><code>Collecting palmerpenguins
+  Downloading palmerpenguins-0.1.4-py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: pandas in /usr/local/lib/python3.10/dist-packages (from palmerpenguins) (2.2.2)
+Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from palmerpenguins) (1.26.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /usr/local/lib/python3.10/dist-packages (from pandas-&gt;palmerpenguins) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas-&gt;palmerpenguins) (2024.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas-&gt;palmerpenguins) (2024.2)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil&gt;=2.8.2-&gt;pandas-&gt;palmerpenguins) (1.16.0)
+Downloading palmerpenguins-0.1.4-py3-none-any.whl (17 kB)
+Installing collected packages: palmerpenguins
+Successfully installed palmerpenguins-0.1.4</code></pre>
+</div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code Here</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> load_penguins()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the first few rows of the dataset</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>penguin.head()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> penguin.dropna()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-4" class="cell" data-outputid="abbc4967-8d6e-439c-d1c3-61a09e536d8f" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pd.get_dummies(penguin[<span class="st">'species'</span>])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>enc <span class="op">=</span> OneHotEncoder()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>enc.fit(penguin[[<span class="st">'species'</span>]]) <span class="co">#learns categories of species variable</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>enc.transform(penguin[[<span class="st">'species'</span>]]).toarray()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>array([[1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [1., 0., 0.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 0., 1.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.],
+       [0., 1., 0.]])</code></pre>
 </div>
 </div>
 <p>Let’s use <code>bill_length_mm</code> to predict <code>bill_depth_mm</code>. Prepare your data and fit the following models on the entire dataset:</p>
@@ -158,53 +481,280 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Degree 10 polynomial model</li>
 </ul>
 <p>Make predictions for each model and plot your fitted models on the scatterplot.</p>
-<div id="cell-5" class="cell" data-outputid="9ac688dd-05fc-414b-bd07-455b11f590ce" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code Here</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv"</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> penguins.dropna(subset<span class="op">=</span>[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>])</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> penguins[[<span class="st">'bill_length_mm'</span>]]</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguins[<span class="st">'bill_depth_mm'</span>]</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_and_predict_polynomial(degree, X, y):</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> make_pipeline(PolynomialFeatures(degree), LinearRegression())</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    model.fit(X, y)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> model.predict(X)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_pred</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>y_pred_linear <span class="op">=</span> fit_and_predict_polynomial(<span class="dv">1</span>, X, y)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>y_pred_quadratic <span class="op">=</span> fit_and_predict_polynomial(<span class="dv">2</span>, X, y)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>y_pred_cubic <span class="op">=</span> fit_and_predict_polynomial(<span class="dv">3</span>, X, y)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>y_pred_degree_10 <span class="op">=</span> fit_and_predict_polynomial(<span class="dv">10</span>, X, y)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y, color<span class="op">=</span><span class="st">'gray'</span>, label<span class="op">=</span><span class="st">"Data"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>X_sorted <span class="op">=</span> np.sort(X.values, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, fit_and_predict_polynomial(<span class="dv">1</span>, X_sorted, y), label<span class="op">=</span><span class="st">"Linear Model (Degree 1)"</span>, color<span class="op">=</span><span class="st">"blue"</span>)</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, fit_and_predict_polynomial(<span class="dv">2</span>, X_sorted, y), label<span class="op">=</span><span class="st">"Quadratic Model (Degree 2)"</span>, color<span class="op">=</span><span class="st">"green"</span>)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, fit_and_predict_polynomial(<span class="dv">3</span>, X_sorted, y), label<span class="op">=</span><span class="st">"Cubic Model (Degree 3)"</span>, color<span class="op">=</span><span class="st">"orange"</span>)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>plt.plot(X_sorted, fit_and_predict_polynomial(<span class="dv">10</span>, X_sorted, y), label<span class="op">=</span><span class="st">"Degree 10 Model"</span>, color<span class="op">=</span><span class="st">"red"</span>)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Bill Length (mm)"</span>)</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Bill Depth (mm)"</span>)</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Polynomial Regression Models for Predicting Bill Depth from Bill Length"</span>)</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-6" class="cell" data-outputid="2dbcb0ec-76d7-4b62-83c7-e171089d40f4" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code Here</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguin[<span class="st">'bill_depth_mm'</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> penguin[[<span class="st">'bill_length_mm'</span>]]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#use linear regression</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LinearRegression()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#train the data</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>lr_fit <span class="op">=</span> lr.fit(X_train, y_train)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>lr_fit.coef_</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#linear regression- test the data</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>train_pred_lr <span class="op">=</span> lr_fit.predict(X_train)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>test_pred_lr <span class="op">=</span> lr_fit.predict(X_test)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> lr_fit.predict(X)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_squared_error(y_train, train_pred_lr))</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_squared_error(y_test, test_pred_lr))</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(r2_score(y_train, train_pred_lr))</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(r2_score(y_test, test_pred_lr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.4737843691460895
+4.244922228889412
+0.05111442533134103
+0.03985048888603515</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-outputid="a24f1744-ca8a-46d1-8efa-6d5845faaed8" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ggplot(penguin, aes(x <span class="op">=</span> <span class="st">"bill_length_mm"</span>, y <span class="op">=</span> <span class="st">"bill_depth_mm"</span>)) <span class="op">+</span> geom_point() <span class="op">+</span> geom_point(aes(y<span class="op">=</span>preds), color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Copy_of_Practice_Activity_Polynomial_Regression_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Copy_of_Practice_Activity_Polynomial_Regression_files/figure-html/cell-6-output-1.png" width="640" height="480" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-8" class="cell" data-outputid="6cf38c5c-745d-416b-9f48-3d790437310e" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> load_penguins()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> penguin.dropna()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the feature and target</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguin[<span class="st">'bill_depth_mm'</span>]</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> penguin[[<span class="st">'bill_length_mm'</span>]]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with missing values</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#X = X.dropna()</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#y = y[X.index]  # Ensure consistent indices after dropping</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Manually create quadratic feature</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>X[<span class="st">'bill_length_mm_squared'</span>] <span class="op">=</span> X[<span class="st">'bill_length_mm'</span>] <span class="op">**</span> <span class="dv">2</span>  <span class="co"># Use .loc to avoid SettingWithCopyWarning</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training and test sets</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize and fit the linear regression model</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LinearRegression()</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>lr_fit <span class="op">=</span> lr.fit(X_train, y_train)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the training and test data</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>train_pred_lr <span class="op">=</span> lr_fit.predict(X_train)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>test_pred_lr <span class="op">=</span> lr_fit.predict(X_test)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> lr_fit.predict(X)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Mean Squared Error and R² Score for both training and test sets</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>train_mse <span class="op">=</span> mean_squared_error(y_train, train_pred_lr)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>test_mse <span class="op">=</span> mean_squared_error(y_test, test_pred_lr)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>train_r2 <span class="op">=</span> r2_score(y_train, train_pred_lr)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>test_r2 <span class="op">=</span> r2_score(y_test, test_pred_lr)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training Mean Squared Error: </span><span class="sc">{</span>train_mse<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test Mean Squared Error: </span><span class="sc">{</span>test_mse<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training R² Score: </span><span class="sc">{</span>train_r2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test R² Score: </span><span class="sc">{</span>test_r2<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training Mean Squared Error: 3.4403952769392454
+Test Mean Squared Error: 3.4853038271651813
+Training R² Score: 0.10570834665632844
+Test R² Score: 0.08123855655223922</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell" data-outputid="c176fcf0-83ce-4c0b-bbfb-b338c6481c65" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ggplot(penguin, aes(x <span class="op">=</span> <span class="st">"bill_length_mm"</span>, y <span class="op">=</span> <span class="st">"bill_depth_mm"</span>)) <span class="op">+</span> geom_point() <span class="op">+</span> geom_point(aes(y<span class="op">=</span>preds), color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Copy_of_Practice_Activity_Polynomial_Regression_files/figure-html/cell-8-output-1.png" width="640" height="480" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-10" class="cell" data-outputid="787763ec-9a4c-474d-a4b7-a9b6eb624f19" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> load_penguins()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the feature and target, dropping rows with missing values</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> penguin.dropna(subset<span class="op">=</span>[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>])</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguin[<span class="st">'bill_depth_mm'</span>]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> penguin[[<span class="st">'bill_length_mm'</span>]]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create polynomial features: x, x^2, and x^3 using .assign()</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.assign(</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    bill_length_mm_squared<span class="op">=</span>X[<span class="st">'bill_length_mm'</span>] <span class="op">**</span> <span class="dv">2</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    bill_length_mm_cubed<span class="op">=</span>X[<span class="st">'bill_length_mm'</span>] <span class="op">**</span> <span class="dv">3</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training and test sets</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize and fit the linear regression model</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LinearRegression()</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>lr_fit <span class="op">=</span> lr.fit(X_train, y_train)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the training and test data</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>train_pred_lr <span class="op">=</span> lr_fit.predict(X_train)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>test_pred_lr <span class="op">=</span> lr_fit.predict(X_test)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> lr_fit.predict(X)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MSE and R² scores</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>train_mse <span class="op">=</span> mean_squared_error(y_train, train_pred_lr)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>test_mse <span class="op">=</span> mean_squared_error(y_test, test_pred_lr)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>train_r2 <span class="op">=</span> r2_score(y_train, train_pred_lr)</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>test_r2 <span class="op">=</span> r2_score(y_test, test_pred_lr)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Display results</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training Mean Squared Error:"</span>, train_mse)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test Mean Squared Error:"</span>, test_mse)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training R² Score:"</span>, train_r2)</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test R² Score:"</span>, test_r2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training Mean Squared Error: 3.2316309935650134
+Test Mean Squared Error: 3.668489868333733
+Training R² Score: 0.1631450591889566
+Test R² Score: 0.05853024153928332</code></pre>
+</div>
+</div>
+<div id="cell-11" class="cell" data-outputid="2417b247-cd36-446d-fd60-53eee33680a5" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ggplot(penguin, aes(x <span class="op">=</span> <span class="st">"bill_length_mm"</span>, y <span class="op">=</span> <span class="st">"bill_depth_mm"</span>)) <span class="op">+</span> geom_point() <span class="op">+</span> geom_point(aes(y<span class="op">=</span>preds), color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Copy_of_Practice_Activity_Polynomial_Regression_files/figure-html/cell-10-output-1.png" width="640" height="480" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-12" class="cell" data-outputid="0fd0eced-fb02-403c-ea58-882252ccd4f6" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, r2_score</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> load_penguins()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>penguin <span class="op">=</span> penguin.dropna()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the feature and target</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> penguin[<span class="st">'bill_depth_mm'</span>]</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> penguin[[<span class="st">'bill_length_mm'</span>]]</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Manually create polynomial features up to degree 10</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> degree <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>):</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    X[<span class="ss">f'bill_length_mm_</span><span class="sc">{</span>degree<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> X[<span class="st">'bill_length_mm'</span>] <span class="op">**</span> degree</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training and test sets</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize and fit the linear regression model</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LinearRegression()</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>lr_fit <span class="op">=</span> lr.fit(X_train, y_train)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the training and test data</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>train_pred_lr <span class="op">=</span> lr_fit.predict(X_train)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>test_pred_lr <span class="op">=</span> lr_fit.predict(X_test)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>tenpreds <span class="op">=</span> lr_fit.predict(X)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate Mean Squared Error and R² Score for both training and test sets</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>train_mse <span class="op">=</span> mean_squared_error(y_train, train_pred_lr)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>test_mse <span class="op">=</span> mean_squared_error(y_test, test_pred_lr)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>train_r2 <span class="op">=</span> r2_score(y_train, train_pred_lr)</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>test_r2 <span class="op">=</span> r2_score(y_test, test_pred_lr)</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training Mean Squared Error: </span><span class="sc">{</span>train_mse<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test Mean Squared Error: </span><span class="sc">{</span>test_mse<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Training R² Score: </span><span class="sc">{</span>train_r2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test R² Score: </span><span class="sc">{</span>test_r2<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training Mean Squared Error: 2.800196357697991
+Test Mean Squared Error: 2.724136693962255
+Training R² Score: 0.2718167110460863
+Test R² Score: 0.30640598505903316</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+&lt;ipython-input-10-d1073e0bbde5&gt;:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+&lt;ipython-input-10-d1073e0bbde5&gt;:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+&lt;ipython-input-10-d1073e0bbde5&gt;:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+&lt;ipython-input-10-d1073e0bbde5&gt;:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+&lt;ipython-input-10-d1073e0bbde5&gt;:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy</code></pre>
+</div>
+</div>
+<div id="cell-13" class="cell" data-outputid="870e7838-3dc4-4717-86b2-5b42a00cde3d" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ggplot(penguin, aes(x <span class="op">=</span> <span class="st">"bill_length_mm"</span>, y <span class="op">=</span> <span class="st">"bill_depth_mm"</span>)) <span class="op">+</span> geom_point() <span class="op">+</span> geom_point(aes(y<span class="op">=</span>tenpreds), color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Copy_of_Practice_Activity_Polynomial_Regression_files/figure-html/cell-12-output-1.png" width="640" height="480" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -214,7 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Are any of thhe models above overfitting the data? If so, which ones and how can you tell?</li>
 <li>Which of the above models do you think fits the data best and why?</li>
 </ul>
-<p>Underfitting is seen in the linear and possibly the quadratic model. Overfitting is seen in the degree 10 model. The cubic model appears to fit the data best because it captures non-linear trends without excessive complexity.</p>
+<p>The first-degree graph shows underfitting, as both the training and test data have low R2values. The cubic and 10th-degree models exhibit overfitting, with the training data R2 significantly higher than the test R2. However, based on the graphs, I believe the 10th-degree model provides the best fit.</p>
 
 </main>
 <!-- /main column -->
